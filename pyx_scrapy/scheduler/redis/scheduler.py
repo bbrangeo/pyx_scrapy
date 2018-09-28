@@ -7,8 +7,9 @@ import logging
 import time
 
 import six
-from pyx_scrapy.utils import get_redis_cli
 from scrapy.utils.misc import load_object
+
+from pyx_scrapy.utils.connection import get_redis_cli
 
 logger = logging.getLogger(__name__)
 
@@ -118,19 +119,11 @@ class Scheduler(object):
                              self.queue_cls, e)
 
         try:
-            # from krscrapy.scheduler.es.dupefilter import ESRFPDupeFilter
-            from pyx_scrapy.scheduler.ssdb import SSDBDupeFilter
-            from scrapy.utils.project import get_project_settings
-
-            if load_object(self.dupefilter_cls) == SSDBDupeFilter:
-                setting = get_project_settings()
-                self.df = SSDBDupeFilter.from_settings(setting)
-            else:
-                self.df = load_object(self.dupefilter_cls)(
-                    server=self.server,
-                    key=self.dupefilter_key % {'spider': spider.name},
-                    debug=spider.settings.getbool('DUPEFILTER_DEBUG'),
-                )
+            self.df = load_object(self.dupefilter_cls)(
+                server=self.server,
+                key=self.dupefilter_key % {'spider': spider.name},
+                debug=spider.settings.getbool('DUPEFILTER_DEBUG'),
+            )
         except TypeError as e:
             raise ValueError("Failed to instantiate dupefilter class '%s': %s",
                              self.dupefilter_cls, e)
