@@ -14,14 +14,9 @@ REDIS_CONFIG = {
     "decode_responses": True,
 }
 
-# 用于爬取的调度器
-SCHEDULER = 'pyx_scrapy.scheduler.scheduler_wrapper.Scheduler'
-# 调度器队列
-SCHEDULER_QUEUE_CLASS = {
-    'pyx_scrapy.scheduler.redis.queue.SpiderPriorityQueue': (-5, 'inf'),
-}
-# 用于检测过滤重复请求的类
-DUPEFILTER_CLASS = 'pyx_scrapy.scheduler.redis.dupefilter.RFPDupeFilter'
+SCHEDULER = 'pyx_scrapy_exts.scheduler.redis.scheduler.RedisScheduler'
+SCHEDULER_QUEUE_CLASS = 'pyx_scrapy_exts.scheduler.redis.queue.PriorityQueue'
+DUPEFILTER_CLASS = 'pyx_scrapy_exts.scheduler.dupefilter.RedisDupeFilter'
 
 CONCURRENT_REQUESTS = 16
 

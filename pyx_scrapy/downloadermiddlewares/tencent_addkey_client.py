@@ -44,6 +44,8 @@ class AddKeyClientMiddleware(object):
         # 忽略请求
         if not hasattr(spider, 'add_key_client') or not spider.add_key_client:
             return
+
+
         logger.debug('request: %s\nnow vkey is %s, already use %.2f s' % (
             request, self.vkey, (time.time() - self._last_get_key_time)))
         try:
