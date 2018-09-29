@@ -1,23 +1,21 @@
-import codecs
 import csv
 import os
 
 from pyx_scrapy.items import ItemK
-from pyx_scrapy.utils.consts import MetaK
+from pyx_scrapy.utils.consts import MetaK, FILES_PATH
 
 
 class OutputCSVPipeline(object):
-    SAVE_FILE_PATH = ""
+    FILES_PATH = ""
 
     def __init__(self):
-        filename = os.path.join(self.SAVE_FILE_PATH, "output.csv")
-        self.file = codecs.open(filename, "a")
-        open()
+        filename = os.path.join(self.FILES_PATH, "output.csv")
+        self.file = open(filename, mode="a", newline="")
         self.writer = csv.writer(self.file)
 
     @classmethod
     def from_crawler(cls, crawler):
-        cls.SAVE_FILE_PATH = crawler.settings.get("SAVE_FILE_PATH", "")
+        cls.FILES_PATH = crawler.settings.get(FILES_PATH, "")
         pipe = cls()
         pipe.crawler = crawler
         return pipe

@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-
 import os
 
 import scrapy
 
 from pyx_scrapy.downloadermiddlewares.tencent_addkey_client import AddKeyClientMiddleware
 from pyx_scrapy.items import ItemK, OutputItem
-from pyx_scrapy.utils.consts import MetaK
+from pyx_scrapy.utils.consts import MetaK, FILES_PATH
 
 
 class TencentSongFileFlacSpider(scrapy.Spider):
@@ -31,7 +29,7 @@ class TencentSongFileFlacSpider(scrapy.Spider):
 
     def parse(self, response):
         pkg = response.meta.get(MetaK.PKG, {})
-        folder = self.settings.get('SAVE_FILE_PATH')
+        folder = self.settings.get(FILES_PATH)
         folder = folder + os.path.sep + 'tencent' + os.path.sep + 'lossless' + os.path.sep
         pathname = '%s.flac' % (pkg.get(MetaK.CP_SONG) + "-" + pkg.get(MetaK.CP_ARTIST))
         if not os.path.exists(folder):

@@ -9,3 +9,6 @@ class MetaK:
     CP_SONG = "_cp_song_"
     CP_ARTIST = "_cp_artist_"
     REL_ID = "_rel_id_"
+
+
+FILES_PATH = "FILES_PATH"

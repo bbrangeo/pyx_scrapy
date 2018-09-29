@@ -36,6 +36,6 @@ REDIRECT_ENABLED = True
 
 LOG_LEVEL = 'DEBUG'
 
-SAVE_FILE_PATH = "D:\\test"
+FILES_PATH = ".\\files"
 
 CLOSE_IF_IDLE = True
