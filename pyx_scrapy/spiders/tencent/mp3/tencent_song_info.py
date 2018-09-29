@@ -3,16 +3,16 @@ import logging
 
 import scrapy
 
-from pyx_scrapy.spiders.tencent.mp3.tencent_song_file import TencentSongFileSpider
+from pyx_scrapy.spiders.tencent.mp3.tencent_song_file import Mp3TencentSongFileSpider
 from pyx_scrapy.utils.consts import MetaK
 
 logger = logging.getLogger(__name__)
 
 
-class TencentSongInfoSpider(scrapy.Spider):
+class Mp3TencentSongInfoSpider(scrapy.Spider):
     """腾讯歌曲详细接口爬取spider"""
 
-    name = "TencentSongInfo"
+    name = "Mp3TencentSongInfo"
 
     close_if_idle = False
 
@@ -56,5 +56,5 @@ class TencentSongInfoSpider(scrapy.Spider):
         # 无损标识
         file = rdata.get('file')
         if file.get('size_flac', 0) > 0 or file.get('size_ape', 0) > 0:
-            yield TencentSongFileSpider.create_request(media_mid, dont_filter=True,
+            yield Mp3TencentSongFileSpider.create_request(media_mid, dont_filter=True,
                                                        **{MetaK.PKG: response.meta.get(MetaK.PKG)})

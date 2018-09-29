@@ -8,9 +8,9 @@ from pyx_scrapy.utils.consts import FILES_PATH
 from pyx_scrapy.utils.consts import MetaK
 
 
-class TencentSongFileSpider(scrapy.Spider):
+class Mp3TencentSongFileSpider(scrapy.Spider):
     """腾讯音源抓取spider"""
-    name = 'TencentSongFile'
+    name = 'Mp3TencentSongFile'
 
     close_if_idle = False
     add_key = True

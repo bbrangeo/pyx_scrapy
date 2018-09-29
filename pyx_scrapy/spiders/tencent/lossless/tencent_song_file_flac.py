@@ -7,9 +7,9 @@ from pyx_scrapy.items import ItemK, OutputItem
 from pyx_scrapy.utils.consts import MetaK, FILES_PATH
 
 
-class TencentSongFileFlacSpider(scrapy.Spider):
+class FlacTencentSongFileSpider(scrapy.Spider):
     """腾讯音源抓取spider"""
-    name = 'TencentSongFileFlac'
+    name = 'FlacTencentSongFile'
 
     close_if_idle = False
 

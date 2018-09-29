@@ -1,35 +1,33 @@
-import os
 import re
 
-import pandas
 import scrapy
 
-from pyx_scrapy.spiders.tencent.lossless.tencent_song_info import TencentSongInfoSpider
-from pyx_scrapy.utils.consts import MetaK, FILES_PATH
+from pyx_scrapy.spiders.tencent.lossless.tencent_song_info import FlacTencentSongInfoSpider
+from pyx_scrapy.utils.consts import MetaK
 
 
-class TencentSongIdTransferPageSpider(scrapy.Spider):
+class FlacTencentSongIdTransferPageSpider(scrapy.Spider):
     """腾讯歌曲ID抽取MID值"""
 
-    name = "TencentSongIdTransferPage"
+    name = "FlacTencentSongIdTransferPage"
 
     url_template = 'https://y.qq.com/n/yqq/song/{songid}_num.html'
 
     close_if_idle = False
 
-    def start_requests(self):
-        filename = os.path.join(self.settings.get(FILES_PATH), 'QQFlac.xlsx')
-        xlsx = pandas.read_excel(filename)
-        for item in xlsx.values:
-            kwargs = {
-                MetaK.PKG: {
-                    MetaK.CP_ID: item[0],
-                    MetaK.CP_SONG: item[1],
-                    MetaK.CP_ARTIST: item[2],
-                    MetaK.REL_ID: item[3],
-                }
-            }
-            yield self.create_request(item[0], dont_filter=True, **kwargs)
+    # def start_requests(self):
+    # filename = os.path.join(self.settings.get(FILES_PATH), 'QQFlac.xlsx')
+    # xlsx = pandas.read_excel(filename)
+    # for item in xlsx.values:
+    #     kwargs = {
+    #         MetaK.PKG: {
+    #             MetaK.CP_ID: item[0],
+    #             MetaK.CP_SONG: item[1],
+    #             MetaK.CP_ARTIST: item[2],
+    #             MetaK.REL_ID: item[3],
+    #         }
+    #     }
+    #     yield self.create_request(item[0], dont_filter=True, **kwargs)
 
     @classmethod
     def create_request(cls, songid, dont_filter=False, *args, **kwargs):
@@ -48,5 +46,5 @@ class TencentSongIdTransferPageSpider(scrapy.Spider):
         if len(fall) == 1:
             mid = fall[0]
 
-            yield TencentSongInfoSpider.create_request(mid, dont_filter=True,
-                                                       **{MetaK.PKG: response.meta.get(MetaK.PKG)})
+            yield FlacTencentSongInfoSpider.create_request(mid, dont_filter=True,
+                                                           **{MetaK.PKG: response.meta.get(MetaK.PKG)})
