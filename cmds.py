@@ -2,9 +2,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.spiderloader import SpiderLoader
 from scrapy.utils.project import get_project_settings
-
-
-
+import logging
 
 import scrapy.core.scheduler
 import scrapy.core.engine
@@ -54,18 +52,30 @@ import scrapy.spidermiddlewares.offsite
 import scrapy.spidermiddlewares.referer
 import scrapy.spidermiddlewares.urllength
 
+import pyx_scrapy_exts.scheduler.redis.scheduler
+import pyx_scrapy_exts.scheduler.redis.queue
+import pyx_scrapy_exts.scheduler.dupefilter
+import pyx_scrapy_exts.downloadermiddlewares
+import pyx_scrapy_exts.downloadermiddlewares.useragent
+import pyx_scrapy_exts.downloadermiddlewares.headers
+
 import redis
+import pandas
+
+logger = logging.getLogger(__name__)
 
 
 def v1multi_crawler():
-    settings = get_project_settings()
-    spider_loader = SpiderLoader(settings)
+    _settings = get_project_settings()
+    spider_loader = SpiderLoader(_settings)
     spider_names = spider_loader.list()
-    print(spider_names)
+    logger.info("++++++ loaders ++++++", spider_names)
 
-    crawler_process = CrawlerProcess(settings)
+    # spider_names = ['TencentSongFileFlac']
+
+    crawler_process = CrawlerProcess(_settings)
     for spider_name in spider_names:
-        print(spider_name)
+        logger.info("+++++++++++  %s +++++++++++++++" % spider_name)
         crawler_process.crawl(spider_name)
 
     crawler_process.start()
