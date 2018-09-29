@@ -1,6 +1,4 @@
-# coding:utf-8
-
-class MetaK(object):
+class MetaK:
     META = 'meta'
     DATA = 'data'
     QUEUE_ITEM = 'queue_item'

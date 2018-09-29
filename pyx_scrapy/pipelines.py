@@ -10,13 +10,14 @@ class OutputCSVPipeline(object):
     SAVE_FILE_PATH = ""
 
     def __init__(self):
-        filename = os.path.join(self.SAVE_FILE_PATH, "output.scv")
-        self.file = codecs.open(filename, "w")
+        filename = os.path.join(self.SAVE_FILE_PATH, "output.csv")
+        self.file = codecs.open(filename, "a")
+        open()
         self.writer = csv.writer(self.file)
 
     @classmethod
     def from_crawler(cls, crawler):
-        cls.MONGODB_URI = crawler.settings.get("SAVE_FILE_PATH", "")
+        cls.SAVE_FILE_PATH = crawler.settings.get("SAVE_FILE_PATH", "")
         pipe = cls()
         pipe.crawler = crawler
         return pipe

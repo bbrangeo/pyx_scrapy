@@ -5,7 +5,7 @@ import os
 import scrapy
 
 from pyx_scrapy.downloadermiddlewares.tencent_addkey_client import AddKeyClientMiddleware
-# from pyx_scrapy.items import ItemK, OutputItem
+from pyx_scrapy.items import ItemK, OutputItem
 from pyx_scrapy.utils.consts import MetaK
 
 
@@ -40,8 +40,8 @@ class TencentSongFileFlacSpider(scrapy.Spider):
         with open(folder + pathname, 'wb') as f:
             f.write(response.body)
 
-            # item = OutputItem()
-            # item[ItemK.k] = "csv"
-            # item[ItemK.pkg] = pkg
-            # item[ItemK.filename] = pathname
-            # yield item
+            item = OutputItem()
+            item[ItemK.k] = "csv"
+            item[ItemK.pkg] = pkg
+            item[ItemK.filename] = pathname
+            yield item
