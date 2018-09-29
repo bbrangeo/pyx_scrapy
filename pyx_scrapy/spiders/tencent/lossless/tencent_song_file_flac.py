@@ -32,7 +32,7 @@ class TencentSongFileFlacSpider(scrapy.Spider):
         pkg = response.meta.get(MetaK.PKG, {})
         folder = self.settings.get('SAVE_FILE_PATH')
         folder = folder + os.path.sep + 'tencent' + os.path.sep + 'lossless' + os.path.sep
-        pathname = '%.flac' % (pkg.get(MetaK.CP_SONG) + "-" + pkg.get(MetaK.CP_ARTIST))
+        pathname = '%s.flac' % (pkg.get(MetaK.CP_SONG) + "-" + pkg.get(MetaK.CP_ARTIST))
         if not os.path.exists(folder):
             os.makedirs(folder)
 
