@@ -2,13 +2,14 @@
 
 BOT_NAME = 'pyx_scrapy'
 
-SPIDER_MODULES = ['pyx_scrapy.spiders']
+SPIDER_MODULES = ['pyx_scrapy.spiders.tencent.mp3']
 
 NEWSPIDER_MODULE = 'pyx_scrapy.spiders'
 
 ROBOTSTXT_OBEY = False
 
 REDIS_CONFIG = {
+    # "host": "127.0.0.1",
     "host": "tk",
     "port": 6379,
     "decode_responses": True,
@@ -21,7 +22,7 @@ DUPEFILTER_CLASS = 'pyx_scrapy_exts.scheduler.dupefilter.RedisDupeFilter'
 CONCURRENT_REQUESTS = 16
 
 DOWNLOADER_MIDDLEWARES = {
-    # 'pyx_scrapy.downloadermiddlewares.tencent_addkey.AddKeyMiddleware': 10,
+    'pyx_scrapy.downloadermiddlewares.tencent_addkey.AddKeyMiddleware': 10,
     'pyx_scrapy.downloadermiddlewares.tencent_addkey_client.AddKeyClientMiddleware': 10,
     'pyx_scrapy_exts.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,

@@ -18,7 +18,7 @@ class TencentSongIdTransferPageSpider(scrapy.Spider):
     close_if_idle = False
 
     def start_requests(self):
-        filename = os.path.join(self.settings.get(FILES_PATH), 'QQFlac.xlsx')
+        filename = os.path.join(self.settings.get(FILES_PATH), 'QQMp3.xlsx')
         xlsx = pandas.read_excel(filename)
         for item in xlsx.values:
             kwargs = {
