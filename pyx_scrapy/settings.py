@@ -23,10 +23,13 @@ CONCURRENT_REQUESTS = 16
 DOWNLOADER_MIDDLEWARES = {
     # 'pyx_scrapy.downloadermiddlewares.tencent_addkey.AddKeyMiddleware': 10,
     'pyx_scrapy.downloadermiddlewares.tencent_addkey_client.AddKeyClientMiddleware': 10,
-
+    'pyx_scrapy_exts.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'pyx_scrapy_exts.downloadermiddlewares.headers.HeadersMiddleware': 2000,
 }
 
 ITEM_PIPELINES = {
+    'pyx_scrapy.pipelines.OutputCSVPipeline': 10
 }
 
 REDIRECT_ENABLED = True
