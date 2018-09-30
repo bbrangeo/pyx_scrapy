@@ -3,6 +3,8 @@ class MetaK:
     DATA = 'data'
     QUEUE_ITEM = 'queue_item'
     SPIDER_NAME = 'spider_name'
+    ITEM_KWARGS = "item_kwargs"
+    CTRL = "ctrl"
 
     PKG = "_pkg_"
     CP_ID = "_cp_id_"
