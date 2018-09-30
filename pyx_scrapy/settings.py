@@ -2,7 +2,7 @@
 
 BOT_NAME = 'pyx_scrapy'
 
-SPIDER_MODULES = ['pyx_scrapy.spiders.tencent.mp3']
+SPIDER_MODULES = ['pyx_scrapy.spiders']
 
 NEWSPIDER_MODULE = 'pyx_scrapy.spiders'
 
@@ -15,18 +15,17 @@ REDIS_CONFIG = {
     "decode_responses": True,
 }
 
-SCHEDULER = 'pyx_scrapy_exts.scheduler.redis.scheduler.RedisScheduler'
-SCHEDULER_QUEUE_CLASS = 'pyx_scrapy_exts.scheduler.redis.queue.PriorityQueue'
-DUPEFILTER_CLASS = 'pyx_scrapy_exts.scheduler.dupefilter.RedisDupeFilter'
+SCHEDULER = 'pyx_scrapy.scheduler.scheduler.SScheduler'
+SCHEDULER_QUEUE_CLASS = 'pyx_scrapy.scheduler.queue.SpiderShareQueue'
 
 CONCURRENT_REQUESTS = 16
 
 DOWNLOADER_MIDDLEWARES = {
     'pyx_scrapy.downloadermiddlewares.tencent_addkey.AddKeyMiddleware': 10,
     'pyx_scrapy.downloadermiddlewares.tencent_addkey_client.AddKeyClientMiddleware': 10,
-    'pyx_scrapy_exts.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
+    'pyx_scrapy.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
-    'pyx_scrapy_exts.downloadermiddlewares.headers.HeadersMiddleware': 2000,
+    'pyx_scrapy.downloadermiddlewares.headers.HeadersMiddleware': 2000,
 }
 
 ITEM_PIPELINES = {

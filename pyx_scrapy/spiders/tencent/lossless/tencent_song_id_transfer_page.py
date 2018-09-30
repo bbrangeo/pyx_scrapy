@@ -1,9 +1,11 @@
+import os
 import re
 
 import scrapy
 
 from pyx_scrapy.spiders.tencent.lossless.tencent_song_info import FlacTencentSongInfoSpider
-from pyx_scrapy.utils.consts import MetaK
+from pyx_scrapy.utils.consts import MetaK, FILES_PATH
+from pyx_scrapy.utils.gen_requests import xlsx_gen_requests
 
 
 class FlacTencentSongIdTransferPageSpider(scrapy.Spider):
@@ -15,19 +17,12 @@ class FlacTencentSongIdTransferPageSpider(scrapy.Spider):
 
     close_if_idle = False
 
-    # def start_requests(self):
-    # filename = os.path.join(self.settings.get(FILES_PATH), 'QQFlac.xlsx')
-    # xlsx = pandas.read_excel(filename)
-    # for item in xlsx.values:
-    #     kwargs = {
-    #         MetaK.PKG: {
-    #             MetaK.CP_ID: item[0],
-    #             MetaK.CP_SONG: item[1],
-    #             MetaK.CP_ARTIST: item[2],
-    #             MetaK.REL_ID: item[3],
-    #         }
-    #     }
-    #     yield self.create_request(item[0], dont_filter=True, **kwargs)
+    xlsx_name = 'QQFlac.xlsx'
+
+    def start_requests(self):
+        filename = os.path.join(self.settings.get(FILES_PATH), self.xlsx_name)
+        for (k, kwargs) in xlsx_gen_requests(filename):
+            yield self.create_request(k, dont_filter=True, **kwargs)
 
     @classmethod
     def create_request(cls, songid, dont_filter=False, *args, **kwargs):
