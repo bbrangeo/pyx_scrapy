@@ -35,7 +35,7 @@ class AddKeyMiddleware:
         # 忽略请求
         if not hasattr(spider, 'add_key') or not spider.add_key:
             return
-        logger.debug('request: %s\nnow vkey is %s, already use %.2f s' % (
+        logger.info('request: %s\nnow vkey is %s, already use %.2f s' % (
             request, self.key, (time.time() - self._last_get_key_time)))
         try:
             url = self._create_url(request)
@@ -58,7 +58,6 @@ class AddKeyMiddleware:
         return self.key
 
     def _create_key(self, media_mid):
-        logger.info('create tencent vkey')
         while 1:
             try:
                 res = request.urlopen(self._key_url % (media_mid, self.guid), timeout=5).read()
@@ -67,7 +66,7 @@ class AddKeyMiddleware:
                 logger.error('get tencent vkey failed, retry...')
                 time.sleep(3)
         self.key = json.loads(re.findall(r'.*?({.*}).*', res.decode('utf-8'))[0])['data']['items'][0]['vkey']
-        logger.debug('[vkey]: %s' % self.key)
+        logger.info('[vkey]: %s' % self.key)
         self._last_get_key_time = time.time()
 
     def _check_time(self):
