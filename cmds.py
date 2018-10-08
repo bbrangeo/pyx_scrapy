@@ -11,6 +11,7 @@ from pyx_scrapy.spiders.tencent.lossless.tencent_song_file_flac import *
 
 import import4pyinstaller
 
+
 def v1multi_crawler():
     settings = get_project_settings()
 
