@@ -15,7 +15,7 @@ import import4pyinstaller
 def v1multi_crawler():
     settings = get_project_settings()
 
-    # pyinstaller 加载有问题,SpiderLoader是运行时扫描，spiders没有被主动打包
+    # pyinstaller 加载有问题,SpiderLoader是运行时扫描，spiders没有被主动打包 => 【pyinstaller 不能语义化打包，只能静态打包】
     # spider_loader = SpiderLoader(_settings)
     # spider_names = spider_loader.list()
     # spider_loader.list()
