@@ -47,8 +47,8 @@ import scrapy.spidermiddlewares.offsite
 import scrapy.spidermiddlewares.referer
 import scrapy.spidermiddlewares.urllength
 
-import settings
 import pyx_scrapy
+import pyx_scrapy.settings
 import pyx_scrapy.scheduler
 import pyx_scrapy.scheduler.scheduler
 import pyx_scrapy.scheduler.queue
