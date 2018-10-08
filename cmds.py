@@ -15,7 +15,7 @@ import import4pyinstaller
 def v1multi_crawler():
     settings = get_project_settings()
 
-    # pyinstaller 加载有问题，只能手动引入class
+    # pyinstaller 加载有问题,SpiderLoader是运行时扫描，spiders没有被主动打包
     # spider_loader = SpiderLoader(_settings)
     # spider_names = spider_loader.list()
     # spider_loader.list()
