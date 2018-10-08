@@ -47,20 +47,14 @@ import scrapy.spidermiddlewares.offsite
 import scrapy.spidermiddlewares.referer
 import scrapy.spidermiddlewares.urllength
 
+import settings
 import pyx_scrapy
-import pyx_scrapy.settings
+import pyx_scrapy.scheduler
+import pyx_scrapy.scheduler.scheduler
+import pyx_scrapy.scheduler.queue
 import pyx_scrapy.pipelines
+import pyx_scrapy.downloadermiddlewares.useragent
+import pyx_scrapy.downloadermiddlewares.headers
 
 import pyx_scrapy.downloadermiddlewares.tencent_addkey
 import pyx_scrapy.downloadermiddlewares.tencent_addkey_client
-# import pyx_scrapy.spiders
-# import pyx_scrapy.spiders.tencent
-# import pyx_scrapy.spiders.tencent.mp3
-# import pyx_scrapy.spiders.tencent.mp3.tencent_song_file
-# import pyx_scrapy.spiders.tencent.mp3.tencent_song_id_transfer_page
-# import pyx_scrapy.spiders.tencent.mp3.tencent_song_info
-
-#
-
-import redis
-
