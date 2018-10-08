@@ -8,13 +8,6 @@ NEWSPIDER_MODULE = 'pyx_scrapy.spiders'
 
 ROBOTSTXT_OBEY = False
 
-REDIS_CONFIG = {
-    # "host": "127.0.0.1",
-    "host": "tk",
-    "port": 6379,
-    "decode_responses": True,
-}
-
 SCHEDULER = 'pyx_scrapy.scheduler.scheduler.SScheduler'
 SCHEDULER_QUEUE_CLASS = 'pyx_scrapy.scheduler.queue.SpiderShareQueue'
 
@@ -34,7 +27,7 @@ ITEM_PIPELINES = {
 
 REDIRECT_ENABLED = True
 
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 
 FILES_PATH = ".\\files"
 
