@@ -35,7 +35,7 @@ class SScheduler(object):
         self.pop_request_none_times = 0
 
         self.idle_max_time = 60 * 3
-        self.next_close_timestamp = -1
+        self.last_active_timestamp = -1
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -102,7 +102,7 @@ class SScheduler(object):
                 self.pause_engine_task.start(self.looping_call_interval)
         else:
             self.pop_request_none_times = 0
-            self.next_close_timestamp = time.time()
+            self.last_active_timestamp = time.time()
 
         return request
 
@@ -121,9 +121,10 @@ class SScheduler(object):
 
     def has_pending_requests(self):
         if len(self) == 0:
-            logger.info(" %s => queue is zero" % self.spider.name)
-            idle_closeable = False if self.next_close_timestamp < 0 else (
-                    time.time() - self.next_close_timestamp > self.idle_max_time
+            logger.info(" %s => queue null and idle %s" % (
+                self.spider.name, int(time.time() - self.last_active_timestamp)))
+            idle_closeable = False if self.last_active_timestamp < 0 else (
+                    time.time() - self.last_active_timestamp > self.idle_max_time
             )
             if idle_closeable:
                 logger.info("The spider is closing : %s ", self.spider.name)
