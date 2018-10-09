@@ -24,6 +24,7 @@ class SScheduler(object):
                  queue_key=SchedulerDefaultConfs.QUEUE_KEY,
                  serializer=None,
                  request_reqser=None):
+        
         self.settings = settings
 
         self.queue_cls = queue_cls
