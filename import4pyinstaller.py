@@ -56,5 +56,4 @@ import pyx_scrapy.pipelines
 import pyx_scrapy.downloadermiddlewares.useragent
 import pyx_scrapy.downloadermiddlewares.headers
 
-import pyx_scrapy.downloadermiddlewares.tencent_addkey
-import pyx_scrapy.downloadermiddlewares.tencent_addkey_client
+import pyx_scrapy.downloadermiddlewares.tencent_vkey
