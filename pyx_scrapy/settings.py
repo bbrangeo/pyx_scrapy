@@ -20,7 +20,7 @@ DOWNLOADER_MIDDLEWARES = {
     'pyx_scrapy.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'pyx_scrapy.downloadermiddlewares.headers.HeadersMiddleware': 2000,
-    'pyx_scrapy.downloadermiddlewares.url.UrlMiddleware': 9999,
+    # 'pyx_scrapy.downloadermiddlewares.url.UrlMiddleware': 9999,
 }
 
 ITEM_PIPELINES = {
