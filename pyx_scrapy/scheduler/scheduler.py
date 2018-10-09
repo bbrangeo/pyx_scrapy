@@ -9,6 +9,8 @@ import six
 from scrapy.utils.misc import load_object
 from twisted.internet import task
 
+import pprint
+
 from . import SchedulerDefaultConfs
 
 logger = logging.getLogger(__name__)
@@ -35,7 +37,10 @@ class SScheduler(object):
         self.pop_request_none_times = 0
 
         self.idle_max_time = 90
-        self.last_active_timestamp = -1
+        self.last_active_timestamp = time.time()
+
+        self.pprint_task = task.LoopingCall(self._pprint)
+        self.pprint_task.start(60)
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -61,6 +66,10 @@ class SScheduler(object):
         cls_object.crawler = crawler
 
         return cls_object
+
+    def _pprint(self):
+        if hasattr(self, "spider"):
+            logger.info(" %s => stats \n %s" % (self.spider.name, pprint.pformat(self.crawler.stats._stats)))
 
     def open(self, spider):
         self.spider = spider
@@ -123,9 +132,8 @@ class SScheduler(object):
         if len(self) == 0:
             logger.info(" %s => queue idle %s second" % (
                 self.spider.name, int(time.time() - self.last_active_timestamp)))
-            idle_closeable = False if self.last_active_timestamp < 0 else (
-                    time.time() - self.last_active_timestamp > self.idle_max_time
-            )
+            idle_closeable = time.time() - self.last_active_timestamp > self.idle_max_time
+
             if idle_closeable:
                 logger.info("The spider is closing : %s ", self.spider.name)
                 return False
