@@ -10,7 +10,7 @@ class OutputCSVPipeline(object):
 
     def __init__(self):
         filename = os.path.join(self.FILES_PATH, "output.csv")
-        self.file = open(filename, mode="a", newline="")
+        self.file = open(filename, mode="a", newline="", encoding='utf-8')
         self.writer = csv.writer(self.file)
 
     @classmethod
