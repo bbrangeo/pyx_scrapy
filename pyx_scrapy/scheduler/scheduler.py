@@ -24,7 +24,7 @@ class SScheduler(object):
                  queue_key=SchedulerDefaultConfs.QUEUE_KEY,
                  serializer=None,
                  request_reqser=None):
-        
+
         self.settings = settings
 
         self.queue_cls = queue_cls
@@ -113,7 +113,8 @@ class SScheduler(object):
         if request and self.stats:
             self.pop_request_none_times = 0
             self.stats.inc_value('scheduler/dequeued/redis', spider=self.spider)
-        else:
+
+        if not request:
             self.pop_request_none_times += 1
             if self.pop_request_none_times > 10:
                 logger.info(" %s +++++++ scrapy engine stop " % self.spider.name)
