@@ -34,7 +34,7 @@ class SScheduler(object):
         self.pause_time_interval = 30
         self.pop_request_none_times = 0
 
-        self.idle_max_time = 60 * 5
+        self.idle_max_time = 60 * 3
         self.next_close_timestamp = -1
 
     @classmethod
@@ -120,10 +120,12 @@ class SScheduler(object):
         return len(self.queue)
 
     def has_pending_requests(self):
-        idle_close = False if self.next_close_timestamp < 0 else (
-                time.time() - self.next_close_timestamp > self.idle_max_time
-        )
-        if idle_close and len(self) == 0:
-            logger.info("This spider is closing : %s ", self.spider.name)
-            return False
+        if len(self) == 0:
+            logger.info(" %s => queue is zero" % self.spider.name)
+            idle_closeable = False if self.next_close_timestamp < 0 else (
+                    time.time() - self.next_close_timestamp > self.idle_max_time
+            )
+            if idle_closeable:
+                logger.info("The spider is closing : %s ", self.spider.name)
+                return False
         return True
