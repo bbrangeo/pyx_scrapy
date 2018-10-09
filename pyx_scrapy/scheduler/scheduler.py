@@ -32,7 +32,8 @@ class SScheduler(object):
         self.serializer = serializer
         self.request_reqser = request_reqser
 
-        self.pause_time_interval = 15
+        self.looping_call_interval = 5
+        self.pause_time_interval = 30
         self.pop_request_none_times = 0
 
     @classmethod
@@ -114,20 +115,21 @@ class SScheduler(object):
         else:
             self.pop_request_none_times += 1
             if self.pop_request_none_times > 10:
-                logger.info(" %s scrapy engine stop " % self.spider.name)
+                logger.info(" %s +++++++ scrapy engine stop " % self.spider.name)
                 self.crawler.engine.pause()  # 暂停
 
                 pause_time = time.time()
                 self.pause_engine_task = task.LoopingCall(self._pause_engine, pause_time, self.pause_time_interval)
-                self.pause_engine_task.start(10)
+                self.pause_engine_task.start(self.looping_call_interval)
         return request
 
     def _pause_engine(self, pause_time, interval):
         t = time.time() - pause_time
         if t < interval:
-            logger.info(' %s scrapy engine restart => %s seconds left' % (self.spider.name, int(interval - t + 1)))
+            logger.info(
+                ' %s ++++++ scrapy engine restart => %s seconds left' % (self.spider.name, int(interval - t + 1)))
         else:
-            logger.info(' %s scrapy engine start' % self.spider.name)
+            logger.info(' %s ++++++ scrapy engine start' % self.spider.name)
             self.crawler.engine.unpause()
             self.pause_engine_task.stop()
             self.pop_request_none_times = 0
