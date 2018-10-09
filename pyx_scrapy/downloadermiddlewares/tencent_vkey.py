@@ -3,7 +3,10 @@ import logging
 import re
 import time
 import traceback
+from random import randint
 from urllib import request
+
+from scrapy.exceptions import IgnoreRequest
 
 logger = logging.getLogger(__name__)
 
@@ -23,12 +26,10 @@ class VKeyMp3Middleware:
                         '&songmid=002NkERn2LNVI4&filename=M500%s.mp3&guid=%s'
         # 要生成的url
         self._url = 'http://dl.stream.qqmusic.qq.com/M500{media_mid}.mp3?vkey={vkey}&guid=%s&fromtag=30' % self.guid
-        self.stats = None
 
     @classmethod
     def from_crawler(cls, crawler):
         instance = cls()
-        instance.stats = crawler.stats
         return instance
 
     def process_request(self, request, spider):
@@ -96,12 +97,10 @@ class VKeyFlacMiddleware:
         self._url = 'http://isure.stream.qqmusic.qq.com/F000{media_mid}.flac?vkey={vkey}&guid={guid}&uin={uin}&fromtag=48'
         # 备用media_mid
         self._media_mid = ['00012bmI17BvZg', '0002yGou4FsgJ1', '0008cX5s2mGIX5']
-        self.stats = None
 
     @classmethod
     def from_crawler(cls, crawler):
         instance = cls()
-        instance.stats = crawler.stats
         return instance
 
     def process_request(self, request, spider):
@@ -158,7 +157,6 @@ class VKeyFlacMiddleware:
                 logger.error('get tencent client vkey failed, retry...')
                 time.sleep(3)
         logger.debug('[vkey]: %s' % self.vkey)
-        print(self._key_url.format(**url_data))
         self._last_get_key_time = time.time()
 
     def _check_time(self):
