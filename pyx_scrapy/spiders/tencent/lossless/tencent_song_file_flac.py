@@ -11,9 +11,7 @@ class FlacTencentSongFileSpider(scrapy.Spider):
     """腾讯音源抓取spider"""
     name = 'FlacTencentSongFile'
 
-    close_if_idle = False
-
-    add_key_client = True
+    tencent_vkey_flac = True
 
     url_template = AddKeyClientMiddleware.template_url
 

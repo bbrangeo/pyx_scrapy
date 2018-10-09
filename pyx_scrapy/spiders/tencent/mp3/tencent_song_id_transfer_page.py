@@ -15,8 +15,6 @@ class Mp3TencentSongIdTransferPageSpider(scrapy.Spider):
 
     url_template = 'https://y.qq.com/n/yqq/song/{songid}_num.html'
 
-    close_if_idle = False
-
     xlsx_name = 'QQMp3.xlsx'
 
     def start_requests(self):

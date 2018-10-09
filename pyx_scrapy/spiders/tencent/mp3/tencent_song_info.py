@@ -14,8 +14,6 @@ class Mp3TencentSongInfoSpider(scrapy.Spider):
 
     name = "Mp3TencentSongInfo"
 
-    close_if_idle = False
-
     url_template = 'https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid={songmid}&tpl=yqq_song_detail&format=json&g_tk=5381&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0'
 
     @classmethod
@@ -57,4 +55,4 @@ class Mp3TencentSongInfoSpider(scrapy.Spider):
         file = rdata.get('file')
         if file.get('size_flac', 0) > 0 or file.get('size_ape', 0) > 0:
             yield Mp3TencentSongFileSpider.create_request(media_mid, dont_filter=True,
-                                                       **{MetaK.PKG: response.meta.get(MetaK.PKG)})
+                                                          **{MetaK.PKG: response.meta.get(MetaK.PKG)})

@@ -14,8 +14,6 @@ class FlacTencentSongInfoSpider(scrapy.Spider):
 
     name = "FlacTencentSongInfo"
 
-    close_if_idle = False
-
     url_template = 'https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid={songmid}&tpl=yqq_song_detail&format=json&g_tk=5381&jsonpCallback=getOneSongInfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0'
 
     @classmethod

@@ -15,9 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 class SScheduler(object):
-    """
-    redis scheduler
-    """
 
     def __init__(self, settings,
                  queue_cls=SchedulerDefaultConfs.QUEUE_CLS,
@@ -37,16 +34,11 @@ class SScheduler(object):
         self.pause_time_interval = 30
         self.pop_request_none_times = 0
 
+        self.idle_max_time = 60 * 5
+        self.next_close_timestamp = -1
+
     @classmethod
     def from_crawler(cls, crawler):
-
-        """
-        单例实现，同一个CrawlerProcess运行多爬虫有问题  => crawler 唯一关联 engine
-
-        scrapy框架现状，一个crawler一个engine {engine内部是独立的scheduler,downloader,itempipeline}
-        """
-        # if hasattr(cls, 'instance'):
-        #     return cls.instance
         settings = crawler.settings
 
         queue_cls = settings.get('SCHEDULER_QUEUE_CLASS', SchedulerDefaultConfs.QUEUE_CLS)
@@ -54,6 +46,7 @@ class SScheduler(object):
 
         serializer = settings.get('SCHEDULER_SERIALIZER', None)
         request_reqser = settings.get('SCHEDULER_REQUEST_REQSER', None)
+
         if isinstance(serializer, six.string_types):
             serializer = importlib.import_module(serializer)
         if isinstance(request_reqser, six.string_types):
@@ -66,16 +59,11 @@ class SScheduler(object):
                          request_reqser=request_reqser)
 
         cls_object.crawler = crawler
-        cls_object.close_if_idle = settings.getbool('CLOSE_IF_IDLE', True)
 
-        # cls.instance = cls_object
         return cls_object
 
     def open(self, spider):
         self.spider = spider
-
-        if hasattr(spider, "close_if_idle"):
-            self.close_if_idle = spider.close_if_idle
 
         # 初始化队列
         try:
@@ -86,8 +74,7 @@ class SScheduler(object):
                 serializer=self.serializer,
                 request_reqser=self.request_reqser)
         except TypeError as e:
-            raise ValueError("Failed to instantiate queue class '%s': %s",
-                             self.queue_cls, e)
+            raise ValueError("Failed to instantiate queue class '%s': %s", self.queue_cls, e)
 
     def close(self, reason):
         logger.info('scheduler close method call %s', reason)
@@ -115,6 +102,7 @@ class SScheduler(object):
                 self.pause_engine_task.start(self.looping_call_interval)
         else:
             self.pop_request_none_times = 0
+            self.next_close_timestamp = time.time()
 
         return request
 
@@ -132,7 +120,10 @@ class SScheduler(object):
         return len(self.queue)
 
     def has_pending_requests(self):
-        if self.close_if_idle and len(self) == 0:
+        idle_close = False if self.next_close_timestamp < 0 else (
+                time.time() - self.next_close_timestamp > self.idle_max_time
+        )
+        if idle_close and len(self) == 0:
             logger.info("This spider is closing : %s ", self.spider.name)
             return False
         return True

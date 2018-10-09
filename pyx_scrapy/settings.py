@@ -15,8 +15,8 @@ SCHEDULER_QUEUE_CLASS = 'pyx_scrapy.scheduler.queue.SpiderShareQueue'
 CONCURRENT_REQUESTS = 32
 
 DOWNLOADER_MIDDLEWARES = {
-    'pyx_scrapy.downloadermiddlewares.tencent_addkey.AddKeyMiddleware': 10,
-    'pyx_scrapy.downloadermiddlewares.tencent_addkey_client.AddKeyClientMiddleware': 10,
+    'pyx_scrapy.downloadermiddlewares.tencent_vkey.VKeyMp3Middleware': 10,
+    'pyx_scrapy.downloadermiddlewares.tencent_vkey.VKeyFlacMiddleware': 10,
     'pyx_scrapy.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'pyx_scrapy.downloadermiddlewares.headers.HeadersMiddleware': 2000,
@@ -41,5 +41,3 @@ REDIRECT_ENABLED = True
 LOG_LEVEL = 'INFO'
 
 FILES_PATH = ".\\files"
-
-CLOSE_IF_IDLE = True

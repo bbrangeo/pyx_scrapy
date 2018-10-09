@@ -12,10 +12,12 @@ class Mp3TencentSongFileSpider(scrapy.Spider):
     """腾讯音源抓取spider"""
     name = 'Mp3TencentSongFile'
 
-    close_if_idle = False
-    add_key = True
+    tencent_vkey_mp3 = True
+
     url_template = AddKeyMiddleware.template_url
+
     ignore_status_list = []
+
     allow_status_list = [404, 200, 201, 403]
 
     # def start_requests(self):
