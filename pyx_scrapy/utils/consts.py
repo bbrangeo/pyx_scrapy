@@ -16,3 +16,8 @@ class MetaK:
 FILES_PATH = "FILES_PATH"
 
 TEMPLATE_URL_WITH_HTTP = 'http://{url}'
+
+
+class XlsxK:
+    tencent_flac = 'QQFlac.xlsx'
+    tencent_mp3 = 'QQMp3.xlsx'
