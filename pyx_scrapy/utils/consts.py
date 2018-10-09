@@ -14,3 +14,5 @@ class MetaK:
 
 
 FILES_PATH = "FILES_PATH"
+
+TEMPLATE_URL_WITH_HTTP = 'http://{url}'
