@@ -9,9 +9,10 @@ NEWSPIDER_MODULE = 'pyx_scrapy.spiders'
 ROBOTSTXT_OBEY = False
 
 SCHEDULER = 'pyx_scrapy.scheduler.scheduler.SScheduler'
+
 SCHEDULER_QUEUE_CLASS = 'pyx_scrapy.scheduler.queue.SpiderShareQueue'
 
-CONCURRENT_REQUESTS = 16
+CONCURRENT_REQUESTS = 32
 
 DOWNLOADER_MIDDLEWARES = {
     'pyx_scrapy.downloadermiddlewares.tencent_addkey.AddKeyMiddleware': 10,
@@ -25,9 +26,15 @@ ITEM_PIPELINES = {
     'pyx_scrapy.pipelines.OutputCSVPipeline': 10
 }
 
+DOWNLOAD_TIMEOUT = 30
+
+DOWNLOAD_MAXSIZE = 1073741824
+
+REACTOR_THREADPOOL_MAXSIZE = 20
+
 REDIRECT_ENABLED = True
 
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'INFO'
 
 FILES_PATH = ".\\files"
 
