@@ -30,11 +30,11 @@ class SScheduler(object):
         self.serializer = serializer
         self.request_reqser = request_reqser
 
-        self.looping_call_interval = 5
+        self.looping_call_interval = 3
         self.pause_time_interval = 30
         self.pop_request_none_times = 0
 
-        self.idle_max_time = 60 * 3
+        self.idle_max_time = 90
         self.last_active_timestamp = -1
 
     @classmethod
@@ -121,7 +121,7 @@ class SScheduler(object):
 
     def has_pending_requests(self):
         if len(self) == 0:
-            logger.info(" %s => queue null and idle %s" % (
+            logger.info(" %s => queue null and idle %s sec" % (
                 self.spider.name, int(time.time() - self.last_active_timestamp)))
             idle_closeable = False if self.last_active_timestamp < 0 else (
                     time.time() - self.last_active_timestamp > self.idle_max_time
