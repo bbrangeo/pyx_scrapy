@@ -121,7 +121,7 @@ class SScheduler(object):
 
     def has_pending_requests(self):
         if len(self) == 0:
-            logger.info(" %s => queue idled %s sec" % (
+            logger.info(" %s => queue idle %s second" % (
                 self.spider.name, int(time.time() - self.last_active_timestamp)))
             idle_closeable = False if self.last_active_timestamp < 0 else (
                     time.time() - self.last_active_timestamp > self.idle_max_time
