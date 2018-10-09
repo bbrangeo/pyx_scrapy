@@ -66,8 +66,6 @@ class SScheduler(object):
                          request_reqser=request_reqser)
 
         cls_object.crawler = crawler
-        cls_object.stats = crawler.stats
-
         cls_object.close_if_idle = settings.getbool('CLOSE_IF_IDLE', True)
 
         # cls.instance = cls_object
@@ -95,11 +93,6 @@ class SScheduler(object):
         logger.info('scheduler close method call %s', reason)
 
     def enqueue_request(self, request):
-        # stats
-        if self.stats:
-            self.stats.inc_value('scheduler/enqueued/redis', spider=self.spider)
-
-        # enqueue
         key = self.queue_key % {'spider': self.spider.name}
         if 'spider_name' in request.meta:
             key = self.queue_key % {'spider': request.meta['spider_name']}
@@ -110,23 +103,21 @@ class SScheduler(object):
 
     def next_request(self):
         request = self.queue.pop()
-        if request and self.stats:
-            self.pop_request_none_times = 0
-            self.stats.inc_value('scheduler/dequeued/redis', spider=self.spider)
-
         if not request:
             self.pop_request_none_times += 1
             if self.pop_request_none_times > 10:
                 logger.info(" %s +++++++ scrapy engine stop " % self.spider.name)
+
                 self.crawler.engine.pause()  # 暂停
 
-                pause_time = time.time()
-                self.pause_engine_task = task.LoopingCall(self._pause_engine, pause_time, self.pause_time_interval)
+                pause_timestamp = time.time()
+                self.pause_engine_task = task.LoopingCall(self._pause_engine, pause_timestamp, self.pause_time_interval)
                 self.pause_engine_task.start(self.looping_call_interval)
+
         return request
 
-    def _pause_engine(self, pause_time, interval):
-        t = time.time() - pause_time
+    def _pause_engine(self, pause_timestamp, interval):
+        t = time.time() - pause_timestamp
         if t < interval:
             logger.info(
                 ' %s ++++++ scrapy engine restart => %s seconds left' % (self.spider.name, int(interval - t + 1)))
