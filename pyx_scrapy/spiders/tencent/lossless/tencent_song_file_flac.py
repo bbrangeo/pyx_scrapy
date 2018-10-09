@@ -2,9 +2,8 @@ import os
 
 import scrapy
 
-from pyx_scrapy.downloadermiddlewares.tencent_addkey_client import AddKeyClientMiddleware
 from pyx_scrapy.items import ItemK, OutputItem
-from pyx_scrapy.utils.consts import MetaK, FILES_PATH
+from pyx_scrapy.utils.consts import MetaK, FILES_PATH, TEMPLATE_URL_WITH_HTTP
 
 
 class FlacTencentSongFileSpider(scrapy.Spider):
@@ -13,7 +12,7 @@ class FlacTencentSongFileSpider(scrapy.Spider):
 
     tencent_vkey_flac = True
 
-    url_template = AddKeyClientMiddleware.template_url
+    url_template = TEMPLATE_URL_WITH_HTTP
 
     @classmethod
     def create_request(cls, media_mid, dont_filter=False, *args, **kwargs):

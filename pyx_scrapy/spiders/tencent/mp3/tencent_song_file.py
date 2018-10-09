@@ -2,9 +2,8 @@ import os
 
 import scrapy
 
-from pyx_scrapy.downloadermiddlewares.tencent_addkey import AddKeyMiddleware
 from pyx_scrapy.items import OutputItem, ItemK
-from pyx_scrapy.utils.consts import FILES_PATH
+from pyx_scrapy.utils.consts import FILES_PATH, TEMPLATE_URL_WITH_HTTP
 from pyx_scrapy.utils.consts import MetaK
 
 
@@ -14,14 +13,7 @@ class Mp3TencentSongFileSpider(scrapy.Spider):
 
     tencent_vkey_mp3 = True
 
-    url_template = AddKeyMiddleware.template_url
-
-    ignore_status_list = []
-
-    allow_status_list = [404, 200, 201, 403]
-
-    # def start_requests(self):
-    #     return [self.create_request('000ynik02WA2v0', dont_filter=True)]
+    url_template = TEMPLATE_URL_WITH_HTTP
 
     @classmethod
     def create_request(cls, media_mid, dont_filter=False, *args, **kwargs):
