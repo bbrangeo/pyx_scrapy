@@ -12,10 +12,9 @@ logger = logging.getLogger(__name__)
 
 
 class VKeyMp3Middleware:
-    template_url = 'http://{url}'
 
     def __init__(self):
-        self.key = ''
+        self.vkey = ''
         self.guid = 0
         # key 使用时间限制(s)
         self._key_use_time_limit = 60 * 60
@@ -37,7 +36,7 @@ class VKeyMp3Middleware:
         if not hasattr(spider, 'tencent_vkey_mp3') or not spider.tencent_vkey_mp3:
             return
         logger.debug('request: %s\nnow vkey is %s, already use %.2f s' % (
-            request, self.key, (time.time() - self._last_get_key_time)))
+            request, self.vkey, (time.time() - self._last_get_key_time)))
         try:
             url = self._create_url(request)
             logger.debug('[url]: %s' % url)
@@ -53,21 +52,22 @@ class VKeyMp3Middleware:
         return url
 
     def _get_key(self, media_mid):
-        # 没有key或者超过时间限制 生成新的key
-        # if not self.key or not self._check_time():
-        self._create_key(media_mid)
-        return self.key
+        if not self.vkey or not self._check_time():
+            self._create_key(media_mid)
+        return self.vkey
 
     def _create_key(self, media_mid):
         while 1:
             try:
                 res = request.urlopen(self._key_url % (media_mid, self.guid), timeout=5).read()
+                self.vkey = json.loads(re.findall(r'.*?({.*}).*', res.decode('utf-8'))[0])['data']['items'][0]['vkey']
+                logger.info('get tencent vkey mp3: %s' % self.vkey)
                 break
             except:
                 logger.error('get tencent vkey failed, retry...')
                 time.sleep(3)
-        self.key = json.loads(re.findall(r'.*?({.*}).*', res.decode('utf-8'))[0])['data']['items'][0]['vkey']
-        logger.debug('[vkey]: %s' % self.key)
+
+        logger.debug('[vkey]: %s' % self.vkey)
         self._last_get_key_time = time.time()
 
     def _check_time(self):
@@ -77,7 +77,6 @@ class VKeyMp3Middleware:
 
 
 class VKeyFlacMiddleware:
-    template_url = 'http://{url}'
 
     def __init__(self):
         self.vkey = ''
@@ -131,18 +130,14 @@ class VKeyFlacMiddleware:
         return self.vkey
 
     def _create_key(self, media_mid):
-        logger.info('create tencent client vkey')
-        # url_data = {'media_mid': media_mid, 'key': self.key, 'uin': self.uin, 'guid': self.guid,
-        #             'time': int(time.time())}
         url_data = {'media_mid': media_mid, 'guid': self.guid, }
-        # 'time': int(time.time())}
         count = 0
         while 1:
             try:
                 url_data['media_mid'] = self._media_mid[randint(0, 3)]
                 res = request.urlopen(self._key_url.format(**url_data)).read()
                 self.vkey = json.loads(res.decode('utf-8'))['data']['items'][0]['vkey']
-                logger.info('get vkey: ' + self.vkey)
+                logger.info('get tencent vkey flac: ' + self.vkey)
                 if not self.vkey.isalnum():
                     logger.debug('get tencent client vkey error, change media_mid retry...')
                     count += 1
