@@ -98,6 +98,7 @@ class SScheduler(object):
             self.stats.inc_value('scheduler/enqueued/redis', spider=self.spider)
 
         # enqueue
+        key = self.queue_key % {'spider': self.spider.name}
         if 'spider_name' in request.meta:
             key = self.queue_key % {'spider': request.meta['spider_name']}
             del request.meta['spider_name']
