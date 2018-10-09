@@ -3,9 +3,11 @@
 
 import importlib
 import logging
+import time
 
 import six
 from scrapy.utils.misc import load_object
+from twisted.internet import task
 
 from . import SchedulerDefaultConfs
 
@@ -29,6 +31,9 @@ class SScheduler(object):
 
         self.serializer = serializer
         self.request_reqser = request_reqser
+
+        self.pause_time_interval = 15
+        self.pop_request_none_times = 0
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -58,6 +63,7 @@ class SScheduler(object):
                          serializer=serializer,
                          request_reqser=request_reqser)
 
+        cls_object.crawler = crawler
         cls_object.stats = crawler.stats
 
         cls_object.close_if_idle = settings.getbool('CLOSE_IF_IDLE', True)
@@ -102,8 +108,28 @@ class SScheduler(object):
     def next_request(self):
         request = self.queue.pop()
         if request and self.stats:
+            self.pop_request_none_times = 0
             self.stats.inc_value('scheduler/dequeued/redis', spider=self.spider)
+        else:
+            self.pop_request_none_times += 1
+            if self.pop_request_none_times > 10:
+                logger.info(" %s scrapy engine stop " % self.spider.name)
+                self.crawler.engine.pause()  # 暂停
+
+                pause_time = time.time()
+                self.pause_engine_task = task.LoopingCall(self._pause_engine, pause_time, self.pause_time_interval)
+                self.pause_engine_task.start(10)
         return request
+
+    def _pause_engine(self, pause_time, interval):
+        t = time.time() - pause_time
+        if t < interval:
+            logger.info(' %s scrapy engine restart => %s seconds left' % (self.spider.name, int(interval - t + 1)))
+        else:
+            logger.info(' %s scrapy engine start' % self.spider.name)
+            self.crawler.engine.unpause()
+            self.pause_engine_task.stop()
+            self.pop_request_none_times = 0
 
     def __len__(self):
         return len(self.queue)
