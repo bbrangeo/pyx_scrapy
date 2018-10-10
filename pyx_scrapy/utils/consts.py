@@ -6,6 +6,8 @@ class MetaK:
     ITEM_KWARGS = "item_kwargs"
     CTRL = "ctrl"
 
+    SONG_FILE_FORMAT = "song_file_format"
+
     PKG = "_pkg_"
     CP_ID = "_cp_id_"
     CP_SONG = "_cp_song_"
@@ -21,3 +23,9 @@ TEMPLATE_URL_WITH_HTTP = 'http://{url}'
 class XlsxK:
     tencent_flac = 'QQFlac.xlsx'
     tencent_mp3 = 'QQMp3.xlsx'
+
+    netease_mp3 = 'NeteaseMp3.xlsx'
+    netease_losses = 'NeteaseLosses.xlsx'
+
+    xiami_mp3 = 'XiamiMp3.xlsx'
+    xiami_losses = 'XiamiLosses.xlsx'
