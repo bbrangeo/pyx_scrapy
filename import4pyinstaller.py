@@ -56,6 +56,7 @@ import pyx_scrapy.pipelines
 import pyx_scrapy.downloadermiddlewares.useragent
 import pyx_scrapy.downloadermiddlewares.headers
 import pyx_scrapy.downloadermiddlewares.referer
+import pyx_scrapy.downloadermiddlewares.url
 
 import pyx_scrapy.downloadermiddlewares.site.tencent_vkey
 import pyx_scrapy.downloadermiddlewares.site.xiami_cookie
