@@ -3,7 +3,7 @@ import logging
 
 import scrapy
 
-from pyx_scrapy.spiders.tencent.tencent_song_file import FlacTencentSongFileSpider, Mp3TencentSongFileSpider
+from pyx_scrapy.spiders.tencent.tencent_song_file import TencentSongFlacSpider, TencentSongMp3Spider
 from pyx_scrapy.utils.consts import MetaK, XlsxK
 
 logger = logging.getLogger(__name__)
@@ -58,12 +58,12 @@ class TencentSongInfoSpider(scrapy.Spider):
         if XlsxK.tencent_mp3 in ctrl:
             file = rdata.get('file')
             if file.get('size_128', 0) > 0 or file.get('size_128mp3', 0) > 0:
-                yield Mp3TencentSongFileSpider.create_request(media_mid, dont_filter=True,
-                                                              **{MetaK.PKG: response.meta.get(MetaK.PKG)})
+                yield TencentSongMp3Spider.create_request(media_mid, dont_filter=True,
+                                                          **{MetaK.PKG: response.meta.get(MetaK.PKG)})
 
         # flac
         if XlsxK.tencent_flac in ctrl:
             file = rdata.get('file')
             if file.get('size_flac', 0) > 0 or file.get('size_ape', 0) > 0:
-                yield FlacTencentSongFileSpider.create_request(media_mid, dont_filter=True,
-                                                               **{MetaK.PKG: response.meta.get(MetaK.PKG)})
+                yield TencentSongFlacSpider.create_request(media_mid, dont_filter=True,
+                                                           **{MetaK.PKG: response.meta.get(MetaK.PKG)})
