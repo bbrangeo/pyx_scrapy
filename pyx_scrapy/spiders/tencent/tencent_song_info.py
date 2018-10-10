@@ -31,7 +31,7 @@ class TencentSongInfoSpider(scrapy.Spider):
                               dont_filter=dont_filter)
 
     def parse(self, response):
-        ctrl = response.meta.get(MetaK.PKG, {}).get(MetaK.CTRL, {})
+        ctrl = response.meta.get(MetaK.PKG, {}).get(MetaK.CTRL, [])
         rjson = json.loads(response.text)
 
         rdata = rjson.get('data')

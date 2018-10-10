@@ -6,10 +6,11 @@ from pyx_scrapy.spiders.tencent.tencent_song_info import TencentSongInfoSpider
 from pyx_scrapy.utils.consts import MetaK
 
 
-class TencentSongStarterSpider(scrapy.Spider):
-    """腾讯歌曲ID抽取MID值"""
-
-    name = "TencentSongStarter"
+class TencentSongTransferSpider(scrapy.Spider):
+    """
+    id2mid
+    """
+    name = "TencentSongTransfer"
 
     url_template = 'https://y.qq.com/n/yqq/song/{songid}_num.html'
 
