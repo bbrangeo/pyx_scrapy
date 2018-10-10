@@ -95,16 +95,16 @@ class TencentSongTranslateLrcSpider(scrapy.Spider):
 
     url_template = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg?songmid={mid}&g_tk=5381'
 
-    def start_requests(self):
-        kwargs = {
-            MetaK.PKG: {
-                MetaK.CP_ID: 1,
-                MetaK.CP_SONG: "2",
-                MetaK.CP_ARTIST: "3",
-                MetaK.REL_ID: 4,
-            }
-        }
-        yield self.create_request("001OyHbk2MSIi4", **kwargs)
+    # def start_requests(self):
+    #     kwargs = {
+    #         MetaK.PKG: {
+    #             MetaK.CP_ID: 1,
+    #             MetaK.CP_SONG: "2",
+    #             MetaK.CP_ARTIST: "3",
+    #             MetaK.REL_ID: 4,
+    #         }
+    #     }
+    #     yield self.create_request("001OyHbk2MSIi4", **kwargs)
 
     @classmethod
     def create_request(cls, mid, dont_filter=False, *args, **kwargs):
