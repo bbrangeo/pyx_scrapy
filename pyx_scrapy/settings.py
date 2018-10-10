@@ -17,7 +17,7 @@ CONCURRENT_REQUESTS = 32
 DOWNLOADER_MIDDLEWARES = {
     'pyx_scrapy.downloadermiddlewares.site.tencent_vkey.VKeyMp3Middleware': 11,
     'pyx_scrapy.downloadermiddlewares.site.tencent_vkey.VKeyFlacMiddleware': 12,
-    'pyx_scrapy.downloadermiddlewares.xiami_cookie.AddCookieMiddleware': 21,
+    'pyx_scrapy.downloadermiddlewares.site.xiami_cookie.AddCookieMiddleware': 21,
     'pyx_scrapy.downloadermiddlewares.useragent.RandomUserAgentMiddleware': 550,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'pyx_scrapy.downloadermiddlewares.headers.HeadersMiddleware': 2000,
